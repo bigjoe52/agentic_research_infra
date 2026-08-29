@@ -11,9 +11,11 @@ the code. Empirical results belong in `RESEARCH_LOG.md`.
 - The self-check validates institutional structure, not scientific correctness or
   successful agent succession.
 - Repository-wide content scans operate only on regular, non-symlink files
-  selected by `git ls-files --cached --others --exclude-standard`. For a project
-  without root Git metadata, a temporary empty Git index supplies the same ignore
-  semantics without modifying the project. This prevents ignored secrets and
+  selected by `git ls-files --cached --others
+  --exclude-per-directory=.gitignore`. For a project without root Git metadata, a
+  temporary empty Git index supplies the same project-owned ignore semantics
+  without modifying the project. User/global Git excludes and `.git/info/exclude`
+  cannot change governance scan results. This prevents project-ignored secrets and
   local/generated artifacts from becoming admissible merely by existing on disk,
   while retaining tracked and non-ignored project files.
 

@@ -68,3 +68,35 @@ external-action, or deployment authority.
   text. This is implementation evidence, not scientific evidence.
 - **Conclusion:** The narrow repository-membership correction is supported for
   the covered harness and generated-project workflows.
+
+## H-003 — Content-scan exclusion reproducibility correction
+
+**Type:** Implementation
+**Status:** Supported
+**Date:** 2026-08-29
+**Supersedes:** None
+
+- **Question:** Can governance content-scan candidates depend only on transferable,
+  repository-owned state while preserving the v1.0.1 repository boundary?
+- **Coverage:** The initialized-repository and pre-`git init` temporary-index
+  selection paths; synthetic global `core.excludesFile`, `.git/info/exclude`,
+  project `.gitignore`, tracked ignored files, untracked legitimate files,
+  forbidden content, and symlink behavior. No real user exclude file was read.
+- **Method and criteria:** After releasing `v1.0.1` at revision `d19adb7`, compare
+  identical synthetic working trees under neutral and file-excluding global Git
+  configurations. Confirm whether `--exclude-standard` changes candidates, then
+  replace it with project-owned per-directory `.gitignore` selection. Both paths
+  must become invariant to global and repository-local excludes while retaining
+  all previously intended project-owned selection and content-detection behavior.
+- **Result:** The post-release audit confirmed that `v1.0.1` produced different
+  candidate sets under different global Git excludes in both paths and could also
+  be influenced by `.git/info/exclude` in initialized repositories. The corrected
+  regression and disposable-project verification passed. Final release identity
+  is recorded in the `v1.0.2` release commit and tag.
+- **Limitations:** Selection still relies on Git and on complete project-owned
+  `.gitignore` rules. Machine-local exclusions intentionally do not protect files
+  from governance scans; local secret/artifact patterns must be transferred into
+  the project `.gitignore`. Tracked files remain candidates even when a project
+  ignore rule matches. Symlinks remain excluded from content reading.
+- **Conclusion:** Project-owned exclusion selection is supported as reproducible
+  harness implementation behavior, not as scientific evidence.

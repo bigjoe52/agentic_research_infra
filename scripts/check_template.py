@@ -65,7 +65,7 @@ def main() -> int:
             raise SystemExit("generated project contains template-generation machinery")
         if (project / "HARNESS_EVIDENCE.md").exists():
             raise SystemExit("generated project imported template-level evidence")
-    print("RJC Research Harness v1.0.1 template check: PASS")
+    print("RJC Research Harness v1.0.2 template check: PASS")
     return 0
 
 

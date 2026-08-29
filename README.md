@@ -41,10 +41,12 @@ Run the repository self-check:
 ```
 
 Repository-wide content checks inspect regular, non-symlink files selected by
-Git: tracked files plus untracked files that are not ignored. Before a generated
-project has Git metadata, the check applies the same selection with a temporary
-Git index and the project's ignore rules. Ignored secrets, environments, caches,
-and generated artifacts are therefore outside the content-scan boundary.
+Git: tracked files plus untracked files not excluded by repository-owned
+`.gitignore` rules. Before a generated project has Git metadata, the check applies
+the same selection with a temporary Git index. User/global Git excludes and
+`.git/info/exclude` do not affect governance scan results. Ignored secrets,
+environments, caches, and generated artifacts are therefore outside the scan
+boundary when recorded in the transferable project ignore rules.
 
 This selection does not create or modify an environment. Use the project virtual
 environment when it already exists; otherwise a compatible system Python is valid

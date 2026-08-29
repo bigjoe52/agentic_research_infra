@@ -12,7 +12,7 @@
 ## Snapshot
 
 - Updated: {{CREATED_DATE}}
-- Code revision / dirty state: harness v1.0.1 or newly instantiated; inspect
+- Code revision / dirty state: harness v1.0.2 or newly instantiated; inspect
   independently
 - Current objective: review project-specific placeholders and define a first
   bounded exploratory question
@@ -21,9 +21,9 @@
 
 ## Recent work
 
-- RJC Research Harness v1.0.1 was instantiated.
-- The v1.0.1 self-check excludes ignored local files from content scans while
-  retaining checks of tracked and non-ignored project files.
+- RJC Research Harness v1.0.2 was instantiated.
+- The v1.0.2 self-check uses only repository-owned `.gitignore` rules for content
+  scan exclusions while retaining tracked and non-ignored project files.
 - No scientific hypothesis, data source, or empirical conclusion was adopted.
 
 ## Exact next action

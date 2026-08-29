@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-HARNESS_VERSION = "1.0.1"
+HARNESS_VERSION = "1.0.2"
 REQUIRED = {
     "AGENTS.md",
     "README.md",
@@ -60,8 +60,10 @@ def repository_files(root: Path = ROOT) -> list[Path]:
         text=True,
     )
     if git_root.returncode == 0 and Path(git_root.stdout.strip()).resolve() == root.resolve():
-        command = ["git", "-C", str(root), "ls-files", "--cached", "--others",
-                   "--exclude-standard", "-z"]
+        command = [
+            "git", "-C", str(root), "ls-files", "--cached", "--others",
+            "--exclude-per-directory=.gitignore", "-z",
+        ]
         completed = subprocess.run(command, check=True, capture_output=True)
     else:
         # A generated project may be checked before `git init`. A temporary empty
@@ -76,7 +78,7 @@ def repository_files(root: Path = ROOT) -> list[Path]:
             )
             completed = subprocess.run(
                 ["git", f"--git-dir={git_dir}", f"--work-tree={root}", "ls-files",
-                 "--others", "--exclude-standard", "-z"],
+                 "--cached", "--others", "--exclude-per-directory=.gitignore", "-z"],
                 check=True,
                 capture_output=True,
             )
