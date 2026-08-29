@@ -20,8 +20,8 @@ orientation path. In brief:
 
 ## Quick start
 
-Requires Python 3.10 or newer and no runtime dependencies. The supported day-one
-commands require no package download or editable installation.
+Requires Python 3.10 or newer, Git, and no Python runtime dependencies. The
+supported day-one commands require no package download or editable installation.
 
 ```bash
 if [ -x .venv/bin/python ]; then
@@ -39,6 +39,12 @@ Run the repository self-check:
 ```bash
 "$PROJECT_PYTHON" scripts/check_harness.py
 ```
+
+Repository-wide content checks inspect regular, non-symlink files selected by
+Git: tracked files plus untracked files that are not ignored. Before a generated
+project has Git metadata, the check applies the same selection with a temporary
+Git index and the project's ignore rules. Ignored secrets, environments, caches,
+and generated artifacts are therefore outside the content-scan boundary.
 
 This selection does not create or modify an environment. Use the project virtual
 environment when it already exists; otherwise a compatible system Python is valid

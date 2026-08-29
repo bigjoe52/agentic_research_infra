@@ -12,7 +12,8 @@
 ## Snapshot
 
 - Updated: {{CREATED_DATE}}
-- Code revision / dirty state: newly instantiated; inspect independently
+- Code revision / dirty state: harness v1.0.1 or newly instantiated; inspect
+  independently
 - Current objective: review project-specific placeholders and define a first
   bounded exploratory question
 - Current maturity: lightweight exploration
@@ -20,7 +21,9 @@
 
 ## Recent work
 
-- RJC Research Harness v1 was instantiated.
+- RJC Research Harness v1.0.1 was instantiated.
+- The v1.0.1 self-check excludes ignored local files from content scans while
+  retaining checks of tracked and non-ignored project files.
 - No scientific hypothesis, data source, or empirical conclusion was adopted.
 
 ## Exact next action
@@ -44,8 +47,9 @@ Read the authoritative orientation path, inspect repository state, and review
 
 ## Working-tree and limitations
 
-- Independently run `git status`; do not rely on this snapshot.
+- Inspect `git status` independently; do not rely on this snapshot.
 - Portability and agent succession have not been demonstrated by instantiation.
+- Git and correct ignore rules are required for the content-scan boundary.
 
 ## Successor acknowledgment template
 
@@ -56,4 +60,3 @@ Active experiment: ...
 Protected data confirmed unopened: ...
 Handoff discrepancies: none | ...
 ```
-

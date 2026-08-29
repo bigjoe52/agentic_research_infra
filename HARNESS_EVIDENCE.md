@@ -37,3 +37,34 @@ external-action, or deployment authority.
 - **Conclusion:** The tested orientation and succession design is supported for
   the reviewed example, subject to the stated scope and limitations.
 
+## H-002 — Content-scan repository-boundary correction
+
+**Type:** Implementation
+**Status:** Supported
+**Date:** 2026-08-29
+**Supersedes:** None
+
+- **Question:** Can the harness exclude ignored secret-bearing and local artifacts
+  from governance content scans without weakening detection in repository files?
+- **Coverage:** The reusable self-check and template verification workflow;
+  synthetic ignored `.env`, credential, virtual-environment, cache, and generated
+  data fixtures; tracked and generated-project source contamination. No external
+  project or real secret file was accessed.
+- **Method and criteria:** From baseline revision `2ffb43c` plus the dirty patch,
+  reproduce the recursive-scan failure with a synthetic ignored `.env`; replace
+  arbitrary filesystem recursion with Git-selected tracked and non-ignored
+  untracked regular files; run selection unit tests and instantiate a disposable
+  project whose self-check must pass with an ignored synthetic `.env` and fail
+  after contamination of a legitimate source file. Template identity and default
+  configuration were used; disposable outputs remained under temporary storage.
+- **Result:** The baseline scan inspected the synthetic ignored file and failed.
+  The corrected unit and disposable-project checks passed, and deliberate source
+  contamination was rejected. The full final verification and release identity
+  are recorded in the `v1.0.1` release commit and tag.
+- **Limitations:** Selection relies on Git and the correctness of project ignore
+  rules. Files explicitly force-added to the Git index remain scan candidates even
+  if an ignore pattern also matches them. Symlinks are not content-scanned because
+  reading them would inspect their targets rather than repository-stored link
+  text. This is implementation evidence, not scientific evidence.
+- **Conclusion:** The narrow repository-membership correction is supported for
+  the covered harness and generated-project workflows.

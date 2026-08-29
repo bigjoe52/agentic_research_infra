@@ -6,10 +6,12 @@ import re
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+HARNESS_VERSION = "1.0.1"
 REQUIRED = {
     "AGENTS.md",
     "README.md",
@@ -47,6 +49,58 @@ def text(path: str) -> str:
 def check(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def repository_files(root: Path = ROOT) -> list[Path]:
+    """Return tracked and non-ignored untracked files belonging to ``root``."""
+    git_root = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if git_root.returncode == 0 and Path(git_root.stdout.strip()).resolve() == root.resolve():
+        command = ["git", "-C", str(root), "ls-files", "--cached", "--others",
+                   "--exclude-standard", "-z"]
+        completed = subprocess.run(command, check=True, capture_output=True)
+    else:
+        # A generated project may be checked before `git init`. A temporary empty
+        # index gives it the same Git-ignore selection semantics without writing
+        # repository metadata into the project.
+        with tempfile.TemporaryDirectory(prefix="rjc-harness-index-") as directory:
+            git_dir = Path(directory) / "repo.git"
+            subprocess.run(
+                ["git", "init", "--quiet", "--bare", str(git_dir)],
+                check=True,
+                capture_output=True,
+            )
+            completed = subprocess.run(
+                ["git", f"--git-dir={git_dir}", f"--work-tree={root}", "ls-files",
+                 "--others", "--exclude-standard", "-z"],
+                check=True,
+                capture_output=True,
+            )
+    relative_paths = completed.stdout.decode("utf-8", errors="surrogateescape").split("\0")
+    return [
+        root / path
+        for path in relative_paths
+        if path and (root / path).is_file() and not (root / path).is_symlink()
+    ]
+
+
+def forbidden_case_law(paths: list[Path], root: Path = ROOT) -> list[tuple[str, str]]:
+    leaks = []
+    for path in paths:
+        try:
+            body = path.read_text(encoding="utf-8").lower()
+        except UnicodeDecodeError:
+            continue
+        leaks.extend(
+            (str(path.relative_to(root)), term)
+            for term in FORBIDDEN_CASE_LAW
+            if term in body
+        )
+    return leaks
 
 
 def main() -> int:
@@ -89,15 +143,7 @@ def main() -> int:
     check("only when repository modification is authorized" in readme,
           "environment-creation authority boundary is missing")
 
-    tracked_text = []
-    for path in ROOT.rglob("*"):
-        if path.is_file() and ".git" not in path.parts and ".venv" not in path.parts:
-            try:
-                tracked_text.append((path, path.read_text(encoding="utf-8").lower()))
-            except UnicodeDecodeError:
-                pass
-    leaks = [(str(path.relative_to(ROOT)), term) for path, body in tracked_text
-             for term in FORBIDDEN_CASE_LAW if term in body]
+    leaks = forbidden_case_law(repository_files())
     check(not leaks, f"forbidden originating-project dependency/case law: {leaks}")
 
     placeholders = text("docs/THE_BEGINNING.md") + text("config/project.toml")
@@ -119,7 +165,7 @@ def main() -> int:
         env=environment,
     )
     check(completed.returncode == 0, "unit tests failed")
-    print("RJC Research Harness v1 self-check: PASS")
+    print(f"RJC Research Harness v{HARNESS_VERSION} self-check: PASS")
     return 0
 
 
