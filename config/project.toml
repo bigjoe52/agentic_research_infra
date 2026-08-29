@@ -1,0 +1,8 @@
+project_name = "{{PROJECT_NAME}}"
+project_title = "{{PROJECT_TITLE}}"
+maturity = "lightweight_exploration"
+
+# PROJECT-SPECIFIC PLACEHOLDERS. Presence is not adoption.
+data_source = "UNDECIDED"
+unit_of_observation = "UNDECIDED"
+

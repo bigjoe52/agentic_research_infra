@@ -1,0 +1,34 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Research data and generated artifacts
+data/raw/**
+data/derived/**
+data/artifacts/**
+!data/raw/.gitkeep
+!data/derived/.gitkeep
+!data/artifacts/.gitkeep
+
+# Local notebooks and editor state
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+
