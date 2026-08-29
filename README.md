@@ -24,16 +24,27 @@ Requires Python 3.10 or newer and no runtime dependencies. The supported day-one
 commands require no package download or editable installation.
 
 ```bash
-python -m venv .venv
-PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
-PYTHONPATH=src .venv/bin/python -m {{PACKAGE_NAME}}
+if [ -x .venv/bin/python ]; then
+  PROJECT_PYTHON=.venv/bin/python
+else
+  PROJECT_PYTHON=python
+fi
+
+PYTHONPATH=src "$PROJECT_PYTHON" -m unittest discover -s tests -v
+PYTHONPATH=src "$PROJECT_PYTHON" -m {{PACKAGE_NAME}}
 ```
 
 Run the repository self-check:
 
 ```bash
-.venv/bin/python scripts/check_harness.py
+"$PROJECT_PYTHON" scripts/check_harness.py
 ```
+
+This selection does not create or modify an environment. Use the project virtual
+environment when it already exists; otherwise a compatible system Python is valid
+for these dependency-free, read-only checks. Create a virtual environment and
+install dependencies only when repository modification is authorized and the
+project actually requires dependencies. A handoff cannot authorize that setup.
 
 ## Research workflow
 

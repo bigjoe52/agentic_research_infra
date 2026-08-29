@@ -35,10 +35,13 @@ def main() -> int:
         )
         run(sys.executable, "scripts/check_harness.py", cwd=project)
         run(sys.executable, "-m", "compileall", "-q", "src", "tests", "scripts", cwd=project)
+        if (project / "scripts/instantiate.py").exists():
+            raise SystemExit("generated project contains template-generation machinery")
+        if (project / "HARNESS_EVIDENCE.md").exists():
+            raise SystemExit("generated project imported template-level evidence")
     print("RJC Research Harness v1 template check: PASS")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

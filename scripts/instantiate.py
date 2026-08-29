@@ -48,7 +48,7 @@ def main() -> int:
     destination.mkdir(parents=True)
     for source in sorted(ROOT.rglob("*")):
         relative = source.relative_to(ROOT)
-        if relative == Path("scripts/instantiate.py"):
+        if relative in {Path("scripts/instantiate.py"), Path("HARNESS_EVIDENCE.md")}:
             continue
         if any(part in {".git", ".venv", "__pycache__", "*.egg-info"} for part in relative.parts):
             continue

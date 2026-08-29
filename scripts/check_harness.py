@@ -81,6 +81,14 @@ def main() -> int:
     check("machinery must remain smaller than the research" in agents,
           "small-harness principle missing")
 
+    readme = text("README.md")
+    check('if [ -x .venv/bin/python ]; then' in readme,
+          "existing-project-venv selection is missing")
+    check("PROJECT_PYTHON=python" in readme,
+          "compatible system-Python fallback is missing")
+    check("only when repository modification is authorized" in readme,
+          "environment-creation authority boundary is missing")
+
     tracked_text = []
     for path in ROOT.rglob("*"):
         if path.is_file() and ".git" not in path.parts and ".venv" not in path.parts:
