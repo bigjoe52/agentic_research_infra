@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "governance-scan/2026-002-project-owned-exclusions",
+  "authority_class": "implementation",
+  "component": "governance-scan",
+  "title": "Make repository-owned ignore rules authoritative",
+  "depends_on": ["governance-scan/2026-001-git-file-selection"],
+  "upstream": {
+    "base_commit": "d19adb7eff6138ffa08380f6232cfd1564be2078",
+    "target_commit": "6c3eeab3d8463bf2fe5a7c4c81757ec0ce8e0f22",
+    "introduced_in_tags": ["v1.0.2"],
+    "full_diff_sha256": "sha256:5df80d1eccdd3b192de1a7c85d8dbe2cfac5f05d7dcd6bb7c4385820ba86cf6d"
+  },
+  "changes": [
+    {
+      "path": "scripts/check_harness.py",
+      "operation": "modify",
+      "base_sha256": "sha256:197c642bcdcf8c418baf8b8beaa3e797c79eede71fbcaca4a58c460cf6cc8338",
+      "target_sha256": "sha256:949992e7941c99e9b4d7c2cc58d8072be3ddb1d41a039e61eaf14d309fce38a8"
+    },
+    {
+      "path": "tests/test_check_harness.py",
+      "operation": "modify",
+      "base_sha256": "sha256:06d7ab0d00b8b34e90a845f2f868dcaa350e61b32d12425e8b81fab5d7ee9566",
+      "target_sha256": "sha256:43ab87960af9d27dd07f30f42519fb7d1bdb721c01b2a835f8c98b55782ab1a8"
+    }
+  ],
+  "validation": [
+    ["{project_python}", "-m", "unittest", "discover", "-s", "tests", "-p", "test_check_harness.py", "-v"],
+    ["{project_python}", "scripts/check_harness.py"]
+  ]
+}

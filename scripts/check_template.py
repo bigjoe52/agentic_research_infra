@@ -65,7 +65,20 @@ def main() -> int:
             raise SystemExit("generated project contains template-generation machinery")
         if (project / "HARNESS_EVIDENCE.md").exists():
             raise SystemExit("generated project imported template-level evidence")
-    print("RJC Research Harness v1.0.2 template check: PASS")
+        if (project / "HARNESS_DECISIONS.md").exists():
+            raise SystemExit("generated project imported template-level decisions")
+        if not (project / ".rjc-harness/lineage.json").is_file():
+            raise SystemExit("generated project is missing native harness lineage")
+        if (project / "scripts/harness_update.py").exists():
+            raise SystemExit("generated project imported updater machinery")
+        if (project / "harness").exists():
+            raise SystemExit("generated project imported harness-maintainer metadata")
+        generated_handoff = (project / "docs/HANDOFF.md").read_text(encoding="utf-8")
+        if "management implementation review" in generated_handoff:
+            raise SystemExit("generated project imported harness-maintainer handoff state")
+        if "No later harness release has automatic jurisdiction" not in generated_handoff:
+            raise SystemExit("generated handoff is missing descendant-independence boundary")
+    print("RJC Research Harness v1.1.0 template check: PASS")
     return 0
 
 

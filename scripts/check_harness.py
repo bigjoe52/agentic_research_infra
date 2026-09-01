@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import os
+import json
 import subprocess
 import sys
 import tempfile
@@ -11,7 +12,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-HARNESS_VERSION = "1.0.2"
+HARNESS_VERSION = "1.1.0"
 REQUIRED = {
     "AGENTS.md",
     "README.md",
@@ -26,6 +27,7 @@ REQUIRED = {
     "data/README.md",
     "pyproject.toml",
     ".gitignore",
+    ".rjc-harness/lineage.json",
 }
 FORBIDDEN_CASE_LAW = (
     "options" + "_flow",
@@ -156,6 +158,15 @@ def main() -> int:
     for secret in (".env", "*.pem", "*.key", "credentials.json", "secrets.json"):
         check(re.search(rf"(?m)^{re.escape(secret)}$", ignore) is not None,
               f"secret ignore missing: {secret}")
+
+    lineage = json.loads(text(".rjc-harness/lineage.json"))
+    check(lineage.get("schema") == 1, "unsupported harness lineage schema")
+    check(lineage.get("origin", {}).get("status") in
+          {"verified", "partially-verified", "unverified"},
+          "harness origin status is missing or invalid")
+    check(isinstance(lineage.get("components"), dict) and
+          isinstance(lineage.get("events"), list),
+          "harness component lineage or event ledger is invalid")
 
     environment = os.environ.copy()
     source_path = str(ROOT / "src")

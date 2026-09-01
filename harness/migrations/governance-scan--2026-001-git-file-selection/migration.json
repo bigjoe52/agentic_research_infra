@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "governance-scan/2026-001-git-file-selection",
+  "authority_class": "implementation",
+  "component": "governance-scan",
+  "title": "Select governance scan candidates through Git",
+  "depends_on": [],
+  "upstream": {
+    "base_commit": "2ffb43ce44942cf0c970e6fea1360c1180452837",
+    "target_commit": "d19adb7eff6138ffa08380f6232cfd1564be2078",
+    "introduced_in_tags": ["v1.0.1"],
+    "full_diff_sha256": "sha256:879626b1e788957ac4251f8321967ee15b20e6887f8014bb6f7ba0daade4a3fd"
+  },
+  "changes": [
+    {
+      "path": "scripts/check_harness.py",
+      "operation": "modify",
+      "base_sha256": "sha256:a614cab88c9123d634bceb34bbf0a45469dabf26842825ba08ef1428e3c0af07",
+      "target_sha256": "sha256:197c642bcdcf8c418baf8b8beaa3e797c79eede71fbcaca4a58c460cf6cc8338"
+    },
+    {
+      "path": "tests/test_check_harness.py",
+      "operation": "add",
+      "base_sha256": null,
+      "target_sha256": "sha256:06d7ab0d00b8b34e90a845f2f868dcaa350e61b32d12425e8b81fab5d7ee9566"
+    }
+  ],
+  "validation": [
+    ["{project_python}", "-m", "unittest", "discover", "-s", "tests", "-p", "test_check_harness.py", "-v"],
+    ["{project_python}", "scripts/check_harness.py"]
+  ]
+}

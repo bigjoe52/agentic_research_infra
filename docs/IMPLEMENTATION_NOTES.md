@@ -18,6 +18,21 @@ the code. Empirical results belong in `RESEARCH_LOG.md`.
   cannot change governance scan results. This prevents project-ignored secrets and
   local/generated artifacts from becoming admissible merely by existing on disk,
   while retaining tracked and non-ignored project files.
+- Downstream reconciliation is driven by `harness/surface-v1.json`. Only the
+  governance scanner and its focused test are initially maintainable. Surface
+  membership makes a path eligible for a semantic migration; it never authorizes
+  whole-file replacement or policy adoption.
+- Updater plans bind descendant `HEAD`, index tree, committed lineage, exact
+  upstream tag/commit, surface, migration descriptors, proposed bytes, and
+  validation to a canonical SHA-256 identity. Application revalidates those
+  inputs and refuses drift.
+- Per-component BASE comes from the descendant commit that first recorded the
+  latest component lineage event. Missing or hash-inconsistent history stops
+  planning. Upstream release prose and version strings are not ancestry evidence.
+- Application validates in a disposable detached worktree before touching the
+  live descendant. Live rollback is limited to exact updater mutations whose
+  expected post-application hashes remain intact. Successful lineage is written
+  only after live validation, and the updater never commits.
 
 ## Entry template
 

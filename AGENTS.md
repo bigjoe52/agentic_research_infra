@@ -4,16 +4,20 @@
 
 For every substantive task, independently reload repository state in this order:
 
-1. Read `docs/THE_BEGINNING.md` for founding intent, scope, non-goals, and the claim ladder.
-2. Read `docs/DECISIONS.md` for adopted constraints and explicit supersession.
-3. Read the operating rules and active entries in `docs/RESEARCH_LOG.md` for evidence.
-4. Read `docs/ROADMAP.md` for current maturity, blockers, and next work.
-5. Read the relevant workflow in `README.md`.
-6. Inspect relevant source, tests, registrations, and working-tree changes.
-7. Read `docs/HANDOFF.md` only as a navigation aid, then verify it against the sources above.
+1. In the reusable harness repository, read `HARNESS_DECISIONS.md` for adopted
+   harness-maintainer constraints and `HARNESS_EVIDENCE.md` for harness evidence.
+   These files are absent from instantiated descendants and grant them no authority.
+2. Read `docs/THE_BEGINNING.md` for founding intent, scope, non-goals, and the claim ladder.
+3. Read `docs/DECISIONS.md` for adopted descendant/project constraints and explicit supersession.
+4. Read the operating rules and active entries in `docs/RESEARCH_LOG.md` for descendant/project evidence.
+5. Read `docs/ROADMAP.md` for current maturity, blockers, and next work.
+6. Read the relevant workflow in `README.md`.
+7. Inspect relevant source, tests, registrations, and working-tree changes.
+8. Read `docs/HANDOFF.md` only as a navigation aid, then verify it against the sources above.
 
-Authority descends in this order: user instructions; `THE_BEGINNING.md`; adopted,
-non-superseded decisions; frozen registrations when they exist; research evidence;
+Authority descends in this order: user instructions; applicable founding intent;
+adopted, non-superseded harness decisions for harness-maintainer work; adopted,
+non-superseded project decisions; frozen registrations when they exist; research evidence;
 roadmap state; implementation notes; handoff context. Evidence describes what was
 observed but does not itself adopt policy. The roadmap reports state but cannot
 grant authority. `HANDOFF.md` is never authoritative.
@@ -56,4 +60,3 @@ its template. State which orientation documents changed, tests run, working-tree
 state, protected-data access state, and remaining limitations. The successor must
 independently reload authoritative state; a conversation summary or handoff is not
 a substitute.
-

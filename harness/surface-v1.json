@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "surface_id": "rjc-harness-surface-v1",
+  "components": [
+    {
+      "id": "governance-scan",
+      "disposition": "maintainable",
+      "members": [
+        "scripts/check_harness.py",
+        "tests/test_check_harness.py"
+      ]
+    }
+  ],
+  "assignments": {
+    "adoption-required": [
+      "AGENTS.md",
+      "README.md",
+      "docs/**",
+      "research/**"
+    ],
+    "project-owned": [
+      ".env.example",
+      ".gitignore",
+      "config/**",
+      "data/**",
+      "pyproject.toml",
+      "src/**",
+      "tests/test_project.py"
+    ],
+    "template-only": [
+      "HARNESS_DECISIONS.md",
+      "HARNESS_EVIDENCE.md",
+      "PORTABILITY_TEST_PROMPT.md",
+      "harness/**",
+      "scripts/instantiate.py",
+      "scripts/check_template.py",
+      "scripts/harness_update.py",
+      "tests/test_harness_update.py",
+      "tests/fixtures/updater/**"
+    ]
+  }
+}

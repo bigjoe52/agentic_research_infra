@@ -75,3 +75,46 @@ python scripts/instantiate.py ../my_research \
 
 The destination must not already exist. The generated repository contains no
 adopted scientific conclusion; all `PROJECT-SPECIFIC` fields require review.
+Instantiation also writes `.rjc-harness/lineage.json`, recording the exact local
+harness source identity when it can be verified. Harness-maintainer decisions,
+evidence, release metadata, migration catalogs, and updater code are not copied
+into the descendant.
+
+## Reconciling downstream harness maintenance
+
+Updates never propagate automatically. Run the updater from an exact local
+harness checkout against a clean, committed descendant. Planning is read-only and
+names semantic migrations explicitly:
+
+```bash
+python3 /path/to/rjc_harness/scripts/harness_update.py plan \
+  --project /path/to/descendant \
+  --upstream /path/to/rjc_harness \
+  --target v1.0.2 \
+  --migration governance-scan/2026-001-git-file-selection \
+  --migration governance-scan/2026-002-project-owned-exclusions \
+  --output /safe/local/plan.json
+```
+
+Review the complete plan, including exclusions, conflicts, validation, and
+lineage. Apply only the exact approved digest:
+
+```bash
+python3 /path/to/rjc_harness/scripts/harness_update.py apply \
+  --project /path/to/descendant \
+  --upstream /path/to/rjc_harness \
+  --plan /safe/local/plan.json \
+  --approve sha256:<exact-plan-digest>
+```
+
+Application validates first in a detached temporary worktree and then in the live
+tree. Successful content and lineage remain uncommitted for maintainer inspection;
+the updater never creates the final commit. A failed live validation is reversed
+only when the updater can prove that its exact mutation remains untouched.
+
+Older descendants without lineage start with `bootstrap-plan` and
+`bootstrap-apply`. Bootstrap uses reachable Git evidence and records `verified`,
+`partially-verified`, or `unverified`; it never manufactures an origin tag.
+Implementation migrations cannot change project-owned or template-only material.
+Governance migrations are separate and require an exact human-management
+authorization record.
